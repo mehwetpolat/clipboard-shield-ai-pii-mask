@@ -1,0 +1,33 @@
+# Build & Release Outputs
+release/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.aps
+
+# Visual Studio & IDE Configurations
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.resharper*
+*.DotSettings.user
+
+# Logs & Crash Reports
+*.log
+crash_log.txt
+*.tmp
+temp/
+tmp/
+scratch/
+
+# OS Specific Files
+Thumbs.db
+Desktop.ini
+.DS_Store
