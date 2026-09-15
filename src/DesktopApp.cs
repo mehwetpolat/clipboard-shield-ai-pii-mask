@@ -473,7 +473,7 @@ namespace PIIMask.App
             AppendGuideHeading(rtb, "🛡️ 1. PII-Mask Nedir & Ne İşe Yarar?");
             AppendGuideBody(rtb, 
                 "PII-Mask; geliştiricilerin, yapay zeka araçlarıyla (ChatGPT, Claude, Cursor, v0, Lovable vb.) çalışan " +
-                "vibecoder'ların ve veri analistlerinin panoya kopyaladığı hassas müşteri veya sistem verilerini internete göndermeden " +
+                "kullanıcıların panoya kopyaladığı hassas müşteri veya sistem verilerini AI araçlarına göndermeden " +
                 "önce yerel RAM belleği üzerinde anında ve %100 çevrimdışı olarak maskeleyen bir güvenlik kalkanıdır.\r\n" +
                 "• 0 Ağ İsteği: Hiçbir sunucuya bağlanmaz, internet bağlantısı gerektirmez.\r\n" +
                 "• Mikro-Saniye Hızında Yerel Koruma: Verileriniz bilgisayarınızdan asla dışarı çıkmaz.");
