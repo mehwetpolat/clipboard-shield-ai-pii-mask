@@ -68,11 +68,11 @@ Siz normal şekilde `Ctrl+C` ile kopyalarsınız, PII-Mask sadece gizli/hassas k
   },
   "payment": {
     "card_number": "[KREDI_KARTI_5]",
-    "cvv": "382",
-    "totp_code": "[OTP_KODU_6]",
-    "stripe_customer_id": "[STRIPE_ID_7]"
+    "cvv": "[CVV_6]",
+    "totp_code": "[OTP_KODU_7]",
+    "stripe_customer_id": "[STRIPE_ID_8]"
   },
-  "api_token": "[API_KEY_OPENAI_8]"
+  "api_token": "[API_KEY_OPENAI_9]"
 }
 ```
 

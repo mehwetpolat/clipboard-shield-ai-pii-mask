@@ -6,13 +6,19 @@ using PIIMask.App.Engine;
 namespace PIIMask.App.Validators
 {
     /// <summary>
-    /// Kredi Kartı, Banka Kartı (Luhn Modulo 10), IBAN (Mod 97-10) ve Bankacılık Kodları Modülü
+    /// Kredi Kartı, Banka Kartı (Luhn Modulo 10), IBAN (Mod 97-10), CVV/CVC ve Bankacılık Kodları Modülü
     /// </summary>
     public static class CreditCardValidator
     {
         private static readonly Regex CardRegex = new Regex(@"\b(?:\d{4}[ -]?){3}\d{4}\b|\b\d{13,19}\b", RegexOptions.Compiled);
         private static readonly Regex IbanRegex = new Regex(@"\b[A-Z]{2}\d{2}[A-Z0-9\s]{12,32}\b", RegexOptions.Compiled);
         private static readonly Regex AbaRegex = new Regex(@"\b\d{9}\b", RegexOptions.Compiled);
+
+        // CVV / CVC Güvenlik Kodları ("cvv": "382", cvv = 123, cvc: "456", vb.)
+        private static readonly Regex CvvRegex = new Regex(@"(?i)([""']?(?:cvv|cvc|cvv2|cvc2|security_code|guvenlik_kodu|card_cvv)[""']?\s*[:=]\s*[""']?)(\d{3,4})([""']?)", RegexOptions.Compiled);
+
+        // Kart Son Kullanma Tarihi ("expiry": "12/28", "exp_date": "05/2027", vb.)
+        private static readonly Regex ExpiryRegex = new Regex(@"(?i)([""']?(?:exp_date|expiry|expiration_date|exp_month_year|son_kullanma)[""']?\s*[:=]\s*[""'])([0-1]?\d[\/-]\d{2,4})([""'])", RegexOptions.Compiled);
 
         /// <summary>
         /// Luhn (Modulo 10) Algoritması ile Kredi/Banka Kartı Doğrulama
@@ -87,14 +93,26 @@ namespace PIIMask.App.Validators
         }
 
         /// <summary>
-        /// Metin içerisindeki tüm geçerli IBAN, Kredi Kartı ve ABA numaralarını maskeler
+        /// Metin içerisindeki tüm geçerli IBAN, Kredi Kartı, CVV ve ABA numaralarını maskeler
         /// </summary>
         public static string Mask(string text, MaskContext ctx)
         {
             if (string.IsNullOrEmpty(text)) return text;
             string result = text;
 
-            // 1. IBAN
+            // 1. CVV / CVC Güvenlik Kodları
+            result = CvvRegex.Replace(result, delegate(Match m)
+            {
+                return m.Groups[1].Value + "[CVV_" + ctx.Next() + "]" + m.Groups[3].Value;
+            });
+
+            // 2. Kart Son Kullanma Tarihi
+            result = ExpiryRegex.Replace(result, delegate(Match m)
+            {
+                return m.Groups[1].Value + "[SKT_" + ctx.Next() + "]" + m.Groups[3].Value;
+            });
+
+            // 3. IBAN
             result = IbanRegex.Replace(result, delegate(Match m)
             {
                 if (IsValidIBAN(m.Value))
@@ -104,7 +122,7 @@ namespace PIIMask.App.Validators
                 return m.Value;
             });
 
-            // 2. Kredi Kartı (PAN)
+            // 4. Kredi Kartı (PAN)
             result = CardRegex.Replace(result, delegate(Match m)
             {
                 if (IsValidLuhn(m.Value))
@@ -114,7 +132,7 @@ namespace PIIMask.App.Validators
                 return m.Value;
             });
 
-            // 3. ABA Routing
+            // 5. ABA Routing
             result = AbaRegex.Replace(result, delegate(Match m)
             {
                 if (IsValidABA(m.Value))

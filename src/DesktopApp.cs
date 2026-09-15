@@ -13,7 +13,6 @@ namespace PIIMask.App
     {
         private bool _isChecked = true;
         private string _baseTitle = "";
-        private string _icon = "";
         private string _filterKey = "";
 
         public bool IsChecked
@@ -31,9 +30,8 @@ namespace PIIMask.App
             get { return _filterKey; }
         }
 
-        public FilterPillButton(string icon, string title, string filterKey, bool initialChecked)
+        public FilterPillButton(string title, string filterKey, bool initialChecked)
         {
-            _icon = icon;
             _baseTitle = title;
             _filterKey = filterKey;
             _isChecked = initialChecked;
@@ -41,9 +39,9 @@ namespace PIIMask.App
             this.FlatStyle = FlatStyle.Flat;
             this.FlatAppearance.BorderSize = 1;
             this.Cursor = Cursors.Hand;
-            this.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            this.Size = new Size(185, 42);
-            this.Margin = new Padding(3);
+            this.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            this.Size = new Size(174, 38);
+            this.Margin = new Padding(4, 4, 4, 4);
 
             UpdateAppearance();
 
@@ -53,7 +51,7 @@ namespace PIIMask.App
             };
         }
 
-        public FilterPillButton(string icon, string title, string filterKey) : this(icon, title, filterKey, true)
+        public FilterPillButton(string title, string filterKey) : this(title, filterKey, true)
         {
         }
 
@@ -64,14 +62,14 @@ namespace PIIMask.App
                 this.BackColor = Color.FromArgb(16, 185, 129); // Zümrüt Yeşili (Aktif)
                 this.ForeColor = Color.White;
                 this.FlatAppearance.BorderColor = Color.FromArgb(52, 211, 153);
-                this.Text = "✔ " + _icon + " " + _baseTitle;
+                this.Text = "✔ " + _baseTitle;
             }
             else
             {
                 this.BackColor = Color.FromArgb(30, 41, 59); // Koyu Slate (Pasif)
                 this.ForeColor = Color.FromArgb(148, 163, 184);
                 this.FlatAppearance.BorderColor = Color.FromArgb(71, 85, 105);
-                this.Text = "✖ " + _icon + " " + _baseTitle;
+                this.Text = "✖ " + _baseTitle;
             }
         }
     }
@@ -100,7 +98,8 @@ namespace PIIMask.App
 
         private TabControl _tabControl;
         private TabPage _tabDashboard;
-        private TabPage _tabGuide;
+        private TabPage _tabManualTest;
+        private TabPage _tabHowToUse;
         private bool _isEnabled = true;
         private string _lastClipboardText = "";
         private Timer _clipboardTimer;
@@ -155,7 +154,7 @@ namespace PIIMask.App
                 Padding = new Padding(12)
             };
 
-            _tabGuide = new TabPage
+            _tabManualTest = new TabPage
             {
                 Text = "  🧪 Manuel Metin Testi  ",
                 BackColor = Color.FromArgb(15, 23, 42),
@@ -163,11 +162,21 @@ namespace PIIMask.App
                 Padding = new Padding(12)
             };
 
+            _tabHowToUse = new TabPage
+            {
+                Text = "  📖 Nasıl Kullanılır?  ",
+                BackColor = Color.FromArgb(15, 23, 42),
+                ForeColor = Color.White,
+                Padding = new Padding(12)
+            };
+
             SetupDashboardTab();
-            SetupGuideTab();
+            SetupManualTestTab();
+            SetupHowToUseTab();
 
             _tabControl.TabPages.Add(_tabDashboard);
-            _tabControl.TabPages.Add(_tabGuide);
+            _tabControl.TabPages.Add(_tabManualTest);
+            _tabControl.TabPages.Add(_tabHowToUse);
             this.Controls.Add(_tabControl);
 
             // System Tray NotifyIcon
@@ -272,13 +281,13 @@ namespace PIIMask.App
                 WrapContents = true
             };
 
-            _pillTCKN = new FilterPillButton("🆔", "TCKN & Kimlik No", "TCKN");
-            _pillCard = new FilterPillButton("💳", "Kredi Kartı & IBAN", "KREDI_KARTI");
-            _pillAPIKey = new FilterPillButton("🔑", "API Key & Secret", "API_ANAHTARI");
-            _pillEmail = new FilterPillButton("📧", "E-Posta", "EPOSTA");
-            _pillPhone = new FilterPillButton("📞", "Telefon Numarası", "TELEFON");
-            _pillDBIP = new FilterPillButton("🗄️", "Database URL & IP", "VERITABANI_BAGLANTISI");
-            _pillName = new FilterPillButton("👤", "İsim & Soyisim", "KULLANICI");
+            _pillTCKN = new FilterPillButton("TCKN & Kimlik No", "TCKN");
+            _pillCard = new FilterPillButton("Kredi Kartı & IBAN", "KREDI_KARTI");
+            _pillAPIKey = new FilterPillButton("API Key & Secret", "API_ANAHTARI");
+            _pillEmail = new FilterPillButton("E-Posta", "EPOSTA");
+            _pillPhone = new FilterPillButton("Telefon Numarası", "TELEFON");
+            _pillDBIP = new FilterPillButton("Database URL & IP", "VERITABANI_BAGLANTISI");
+            _pillName = new FilterPillButton("İsim & Soyisim", "KULLANICI");
 
             flowFilters.Controls.Add(_pillTCKN);
             flowFilters.Controls.Add(_pillCard);
@@ -328,7 +337,7 @@ namespace PIIMask.App
             _tabDashboard.Controls.Add(lblFooter);
         }
 
-        private void SetupGuideTab()
+        private void SetupManualTestTab()
         {
             // Group: Interactive Test
             GroupBox grpTest = new GroupBox
@@ -377,11 +386,11 @@ namespace PIIMask.App
             {
                 Text = "⚡ Maskele & Doğrula",
                 Location = new Point(15, 420),
-                Size = new Size(200, 42),
+                Size = new Size(180, 42),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(59, 130, 246),
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
                 Cursor = Cursors.Hand
             };
             btnTest.FlatAppearance.BorderSize = 0;
@@ -391,8 +400,8 @@ namespace PIIMask.App
             Button btnLoadSample = new Button
             {
                 Text = "📝 Örnek Veri Yükle",
-                Location = new Point(225, 420),
-                Size = new Size(160, 42),
+                Location = new Point(205, 420),
+                Size = new Size(165, 42),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(71, 85, 105),
                 ForeColor = Color.White,
@@ -403,7 +412,121 @@ namespace PIIMask.App
             btnLoadSample.Click += LoadSampleData;
             grpTest.Controls.Add(btnLoadSample);
 
-            _tabGuide.Controls.Add(grpTest);
+            Button btnCopyOutput = new Button
+            {
+                Text = "📋 Çıktıyı Kopyala",
+                Location = new Point(385, 420),
+                Size = new Size(165, 42),
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.FromArgb(16, 185, 129),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnCopyOutput.FlatAppearance.BorderSize = 0;
+            btnCopyOutput.Click += delegate(object s, EventArgs e)
+            {
+                if (!string.IsNullOrEmpty(_txtTestOutput.Text))
+                {
+                    SafeSetClipboardText(_txtTestOutput.Text);
+                    AppendLog("📋 Test çıktısı panoya kopyalandı.");
+                }
+            };
+            grpTest.Controls.Add(btnCopyOutput);
+
+            _tabManualTest.Controls.Add(grpTest);
+        }
+
+        private void SetupHowToUseTab()
+        {
+            GroupBox grpGuide = new GroupBox
+            {
+                Text = " 📖 PII-Mask Kullanım Kılavuzu & Detaylı Özellik Açıklamaları ",
+                Location = new Point(12, 12),
+                Size = new Size(760, 520),
+                ForeColor = Color.FromArgb(148, 163, 184),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+            };
+
+            RichTextBox rtbGuide = new RichTextBox
+            {
+                Location = new Point(15, 25),
+                Size = new Size(730, 480),
+                BackColor = Color.FromArgb(15, 23, 42),
+                ForeColor = Color.FromArgb(226, 232, 240),
+                Font = new Font("Segoe UI", 9.5F),
+                BorderStyle = BorderStyle.None,
+                ReadOnly = true,
+                ScrollBars = RichTextBoxScrollBars.Vertical
+            };
+
+            PopulateHowToUseGuide(rtbGuide);
+
+            grpGuide.Controls.Add(rtbGuide);
+            _tabHowToUse.Controls.Add(grpGuide);
+        }
+
+        private void PopulateHowToUseGuide(RichTextBox rtb)
+        {
+            rtb.Clear();
+
+            AppendGuideHeading(rtb, "🛡️ 1. PII-Mask Nedir & Ne İşe Yarar?");
+            AppendGuideBody(rtb, 
+                "PII-Mask; geliştiricilerin, yapay zeka araçlarıyla (ChatGPT, Claude, Cursor, v0, Lovable vb.) çalışan " +
+                "vibecoder'ların ve veri analistlerinin panoya kopyaladığı hassas müşteri veya sistem verilerini internete göndermeden " +
+                "önce yerel RAM belleği üzerinde anında ve %100 çevrimdışı olarak maskeleyen bir güvenlik kalkanıdır.\r\n" +
+                "• 0 Ağ İsteği: Hiçbir sunucuya bağlanmaz, internet bağlantısı gerektirmez.\r\n" +
+                "• Mikro-Saniye Hızında Yerel Koruma: Verileriniz bilgisayarınızdan asla dışarı çıkmaz.");
+
+            AppendGuideHeading(rtb, "⚡ 2. Kalkan & Canlı Pano Ekranı");
+            AppendGuideBody(rtb,
+                "• Otomatik Pano Koruması: Uygulama açıkken panonuza bir metin kopyaladığınızda (Ctrl+C), PII-Mask 50'den fazla " +
+                "algoritmik kural ile metni anında tarar. Hassas veri tespit edildiğinde otomatik olarak '[MASKE_ETİKETİ]' formatına " +
+                "dönüştürülerek güvenli hali panonuza geri yazılır.\r\n" +
+                "• Kalkan Durumu (🟢 Aktif / 🔴 Kalkanı Durdur): Ana ekrandaki açma/kapama butonuyla korumayı tek tıkla " +
+                "geçici olarak durdurabilir veya tekrar başlatabilirsiniz.\r\n" +
+                "• Canlı Pano Günlüğü: RAM üzerinde gerçekleşen her maskeleme ve koruma işlemini zaman damgalı log olarak listeler.");
+
+            AppendGuideHeading(rtb, "🔍 3. Aktif Koruma Filtreleri (Butonlar & Açma/Kapatma)");
+            AppendGuideBody(rtb,
+                "Filtre butonlarına tıklayarak istediğiniz koruma kuralını bağımsız olarak açıp kapatabilirsiniz:\r\n" +
+                "• ✔ [Yeşil - Aktif]: Bu veri türü kopyalandığında otomatik olarak taranır ve maskelenir.\r\n" +
+                "• ✖ [Koyu - Pasif]: Bu veri türü taranmaz, orijinal haliyle panoda korunur.\r\n\r\n" +
+                "Tüm Filtrelerin Kapsamı ve Örnekleri:\r\n" +
+                "1. TCKN & Kimlik No: 11 haneli T.C. Kimlik Numaralarını çift modülo algoritmasıyla doğrular ([TCKN_1]). Yabancı SSN, VKN, NINO verilerini de maskeler.\r\n" +
+                "2. Kredi Kartı & IBAN: Luhn algoritmalı 16 haneli kart numaralarını ([KREDI_KARTI_1]), TR ve Uluslararası IBAN formatlarını ([IBAN_1]), 3-4 haneli CVV/CVC güvenlik kodlarını ([CVV]) ve Kart Son Kullanma Tarihlerini ([SON_KULLANMA_TARIHI]) maskeler.\r\n" +
+                "3. API Key & Secret: OpenAI (sk-proj-...), Anthropic Claude, Google Gemini, GitHub, AWS Access/Secret Key, Stripe anahtarlarını, Bearer JWT token'larını, şifreleri (\"password\": \"...\") ve 6 haneli OTP/TOTP kodlarını ([API_ANAHTARI_1], [GIZLI_PAROLA], [OTP_KODU]) maskeler.\r\n" +
+                "4. E-Posta: RFC 5322 uyumlu tüm kişisel ve kurumsal e-posta adreslerini ([EPOSTA_1]) maskeler.\r\n" +
+                "5. Telefon Numarası: Türkiye cep telefonlarını (05xx, +90), sabit hatları ve uluslararası numaraları ([TELEFON_1]) maskeler.\r\n" +
+                "6. Database URL & IP: PostgreSQL, MySQL, MongoDB, Redis gibi veritabanı bağlantı adreslerini ([VERITABANI_BAGLANTISI_1]) ve IPv4/IPv6 adreslerini ([IP_ADRESI_1]) maskeler.\r\n" +
+                "7. İsim & Soyisim: JSON ve kodlar içerisindeki 'full_name', 'first_name', 'customer_name', 'ad_soyad' alanlarını ve 'Sayın [Ad Soyad]' hitaplarını ([KULLANICI_1]) JSON yapısını bozmadan maskeler.");
+
+            AppendGuideHeading(rtb, "🧪 4. Manuel Metin Testi Ekranı");
+            AppendGuideBody(rtb,
+                "• Panoyu kullanmadan, elinizdeki bir JSON isteğini (Request), yanıtını (Response) veya kod bloğunu sol kutuya yapıştırıp '⚡ Maskele & Doğrula' butonuna basarak anında test edebilirsiniz.\r\n" +
+                "• '📝 Örnek Veri Yükle' butonu ile hızlıca gerçekçi test verisi yükleyebilir, '📋 Çıktıyı Kopyala' butonu ile maskelenmiş sonucu alabilirsiniz.");
+
+            AppendGuideHeading(rtb, "📌 5. Sistem Tepsisi (Tray) & Arka Plan Koruması");
+            AppendGuideBody(rtb,
+                "• Pencereyi kapattığınızda veya simge durumuna küçülttüğünüzde PII-Mask görev çubuğu bildirim alanında (saat yanında) sessizce çalışmaya devam eder.\r\n" +
+                "• Kalkan simgesine çift tıklayarak pencereyi dilediğiniz an tekrar açabilir, sağ tıklayarak hızlı menüden çıkış yapabilirsiniz.");
+
+            rtb.SelectionStart = 0;
+            rtb.ScrollToCaret();
+        }
+
+        private void AppendGuideHeading(RichTextBox rtb, string heading)
+        {
+            rtb.SelectionFont = new Font("Segoe UI", 11.5F, FontStyle.Bold);
+            rtb.SelectionColor = Color.FromArgb(56, 189, 248); // Canlı Cyan / Sky Blue
+            rtb.AppendText(heading + "\r\n\r\n");
+        }
+
+        private void AppendGuideBody(RichTextBox rtb, string text)
+        {
+            rtb.SelectionFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+            rtb.SelectionColor = Color.FromArgb(226, 232, 240); // Açık Slate Gri
+            rtb.AppendText(text + "\r\n\r\n");
         }
 
         private void LoadSampleData(object sender, EventArgs e)
