@@ -10,7 +10,10 @@ namespace PIIMask.App.Validators
     /// </summary>
     public static class TcknValidator
     {
-        private static readonly Regex TcknRegex = new Regex(@"\b\d{11}\b", RegexOptions.Compiled);
+        // Kullanıcılar kimlik numarasını "1234 567895 0" veya "123-456-789-50"
+        // şeklinde kopyalayabildiği için ayraçları aday eşleşmenin parçası kabul ediyoruz.
+        // Asıl doğrulama her zaman ayraçları kaldırılmış 11 hane üzerinde yapılır.
+        private static readonly Regex TcknRegex = new Regex(@"(?<!\d)(?:\d[ \t.-]?){10}\d(?!\d)", RegexOptions.Compiled);
 
         /// <summary>
         /// TCKN'nin matematiksel algoritma kurallarına uygunluğunu doğrular
@@ -52,7 +55,8 @@ namespace PIIMask.App.Validators
 
             return TcknRegex.Replace(text, delegate(Match m)
             {
-                if (IsValid(m.Value))
+                string normalized = Regex.Replace(m.Value, @"[ \t.-]", "");
+                if (IsValid(normalized))
                 {
                     return "[TCKN_" + ctx.Next() + "]";
                 }

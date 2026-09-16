@@ -27,6 +27,9 @@ temp/
 tmp/
 scratch/
 
+# Local regression checks (not part of the distributable application)
+tests/
+
 # OS Specific Files
 Thumbs.db
 Desktop.ini

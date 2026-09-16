@@ -9,7 +9,9 @@ namespace PIIMask.App.Validators
     /// </summary>
     public static class PhoneValidator
     {
-        private static readonly Regex TrPhoneRegex = new Regex(@"(?:\+?90\s*|\b0)?5\d{2}[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}\b", RegexOptions.Compiled);
+        // Her hane arasına boşluk, tire veya nokta konabilen TR GSM numaraları.
+        // Bu sayede 05 55 555 55 55, 0 555 5555555 ve 0 5 5 ... biçimleri de yakalanır.
+        private static readonly Regex TrPhoneRegex = new Regex(@"(?<!\d)(?:(?:\+\s*9\s*0|0)\s*)?5(?:[ \t.-]*\d){9}(?!\d)", RegexOptions.Compiled);
         private static readonly Regex NanpPhoneRegex = new Regex(@"\b(?:\+?1[\s.-]?)?\(?[2-9]\d{2}\)?[\s.-]?[2-9]\d{2}[\s.-]?\d{4}\b", RegexOptions.Compiled);
 
         /// <summary>
